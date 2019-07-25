@@ -1,12 +1,11 @@
-package com.pranavkapoorr.helloworldgrpc.services;
+package com.pranavkapoorr.helloworldgrpc;
 
-import com.google.protobuf.RpcCallback;
-import com.google.protobuf.RpcController;
-import com.pranavkapoorr.helloworldgrpc.*;
-import com.pranavkapoorr.helloworldgrpc.daos.UserRecord;
+import com.pranavkapoorr.helloworldgrpc.LoginServiceOuterClass.LoginRequest;
+import com.pranavkapoorr.helloworldgrpc.LoginServiceOuterClass.LoginResponse;
+
 import io.grpc.stub.StreamObserver;
 
-public class LoginServiceImpl extends LoginService.LoginServiceImplBase  {
+public class LoginServiceImpl extends LoginServiceGrpc.LoginServiceImplBase  {
 
     @Override
     public void logIn(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
@@ -19,10 +18,8 @@ public class LoginServiceImpl extends LoginService.LoginServiceImplBase  {
     }
 
     private LoginResponse checkLoginCredential(String username, String password) {
-        UserRecord userRecord = UserRecord.getInstance();
-
-        LoginResponse.Builder responseBuilder = LoginResponse.newBuilder();
-        if (userRecord.isUserMatch(username, password)) {
+       LoginResponse.Builder responseBuilder = LoginResponse.newBuilder();
+        if (username.equals(password)) {
             responseBuilder.setResponseCode(200)
                     .setMessage("Login Success");
         } else {
